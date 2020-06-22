@@ -2,7 +2,9 @@ import sys
 import argparse
 import torch
 from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
-
+####################################
+####### INCOMPLETE? main() broken -R
+#######################################
 #import encoders.bert as bert
 #from data import load_encodings
 #OPTIONAL: if you want to have more information on what's happening, activate the logger as follows

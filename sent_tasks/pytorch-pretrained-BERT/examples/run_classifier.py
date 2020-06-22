@@ -872,7 +872,7 @@ def get_encodings(args, encs, tokenizer, bert_encoder, gd, device,
 					ebd /= np.linalg.norm(ebd, axis=-1, keepdims=True)
 				ebd = np.mean(ebd, axis=0)
 			else:
-				ebd /= np.linalg.norm(ebd)
+				ebd /= np.linalg.norm(ebd) #Call numpy.linalg.norm(arr) to find the normal form of an array arr. Divide an array by its norm to normalize the array. #NOTE: comment by R
 				if (args.debias and not "male" in category): ebd = drop(ebd, gd)
 				ebd /= np.linalg.norm(ebd) # Normalization actually doesn't affect e_size
 			

@@ -1,5 +1,9 @@
 # based off of BERT example in pytorch-pretrained-BERT repo
 
+##########################################################
+####### INCOMPLETE? nothing really happens      ##########
+#######  besides encoding 2 sentences -R        ##########
+##########################################################
 import torch
 from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
 

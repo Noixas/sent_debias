@@ -78,332 +78,332 @@ class InputFeatures(object):
 		self.label_id = label_id
 
 
-class DataProcessor(object):
-	"""Base class for data converters for sequence classification data sets."""
+# class DataProcessor(object):
+# 	"""Base class for data converters for sequence classification data sets."""
 
-	def get_train_examples(self, data_dir):
-		"""Gets a collection of `InputExample`s for the train set."""
-		raise NotImplementedError()
+# 	def get_train_examples(self, data_dir):
+# 		"""Gets a collection of `InputExample`s for the train set."""
+# 		raise NotImplementedError()
 
-	def get_dev_examples(self, data_dir):
-		"""Gets a collection of `InputExample`s for the dev set."""
-		raise NotImplementedError()
+# 	def get_dev_examples(self, data_dir):
+# 		"""Gets a collection of `InputExample`s for the dev set."""
+# 		raise NotImplementedError()
 
-	def get_labels(self):
-		"""Gets the list of labels for this data set."""
-		raise NotImplementedError()
+# 	def get_labels(self):
+# 		"""Gets the list of labels for this data set."""
+# 		raise NotImplementedError()
 
-	@classmethod
-	def _read_tsv(cls, input_file, quotechar=None):
-		"""Reads a tab separated value file."""
-		with open(input_file, "r", encoding="utf-8") as f:
-			reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
-			lines = []
-			for line in reader:
-				if sys.version_info[0] == 2:
-					line = list(unicode(cell, 'utf-8') for cell in line)
-				lines.append(line)
-			return lines
-
-
-class MrpcProcessor(DataProcessor):
-	"""Processor for the MRPC data set (GLUE version)."""
-
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		logger.info("LOOKING AT {}".format(os.path.join(data_dir, "train.tsv")))
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
-
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
-
-	def get_labels(self):
-		"""See base class."""
-		return ["0", "1"]
-
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, i)
-			text_a = line[3]
-			text_b = line[4]
-			label = line[0]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-		return examples
+# 	@classmethod
+# 	def _read_tsv(cls, input_file, quotechar=None):
+# 		"""Reads a tab separated value file."""
+# 		with open(input_file, "r", encoding="utf-8") as f:
+# 			reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
+# 			lines = []
+# 			for line in reader:
+# 				if sys.version_info[0] == 2:
+# 					line = list(unicode(cell, 'utf-8') for cell in line)
+# 				lines.append(line)
+# 			return lines
 
 
-class MnliProcessor(DataProcessor):
-	"""Processor for the MultiNLI data set (GLUE version)."""
+# class MrpcProcessor(DataProcessor):
+# 	"""Processor for the MRPC data set (GLUE version)."""
 
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		logger.info("LOOKING AT {}".format(os.path.join(data_dir, "train.tsv")))
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
 
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev_matched.tsv")),
-			"dev_matched")
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
 
-	def get_labels(self):
-		"""See base class."""
-		return ["contradiction", "entailment", "neutral"]
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["0", "1"]
 
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, line[0])
-			text_a = line[8]
-			text_b = line[9]
-			label = line[-1]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-		return examples
-
-
-class MnliMismatchedProcessor(MnliProcessor):
-	"""Processor for the MultiNLI Mismatched data set (GLUE version)."""
-
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev_mismatched.tsv")),
-			"dev_matched")
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, i)
+# 			text_a = line[3]
+# 			text_b = line[4]
+# 			label = line[0]
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+# 		return examples
 
 
-class ColaProcessor(DataProcessor):
-	"""Processor for the CoLA data set (GLUE version)."""
+# class MnliProcessor(DataProcessor):
+# 	"""Processor for the MultiNLI data set (GLUE version)."""
 
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
 
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev_matched.tsv")),
+# 			"dev_matched")
 
-	def get_labels(self):
-		"""See base class."""
-		return ["0", "1"]
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["contradiction", "entailment", "neutral"]
 
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			guid = "%s-%s" % (set_type, i)
-			text_a = line[3]
-			label = line[1]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
-		return examples
-
-
-class Sst2Processor(DataProcessor):
-	"""Processor for the SST-2 data set (GLUE version)."""
-
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
-
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
-
-	def get_labels(self):
-		"""See base class."""
-		return ["0", "1"]
-
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, i)
-			text_a = line[0]
-			label = line[1]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
-		return examples
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, line[0])
+# 			text_a = line[8]
+# 			text_b = line[9]
+# 			label = line[-1]
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+# 		return examples
 
 
-class StsbProcessor(DataProcessor):
-	"""Processor for the STS-B data set (GLUE version)."""
+# class MnliMismatchedProcessor(MnliProcessor):
+# 	"""Processor for the MultiNLI Mismatched data set (GLUE version)."""
 
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
-
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
-
-	def get_labels(self):
-		"""See base class."""
-		return [None]
-
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, line[0])
-			text_a = line[7]
-			text_b = line[8]
-			label = line[-1]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-		return examples
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev_mismatched.tsv")),
+# 			"dev_matched")
 
 
-class QqpProcessor(DataProcessor):
-	"""Processor for the STS-B data set (GLUE version)."""
+# class ColaProcessor(DataProcessor):
+# 	"""Processor for the CoLA data set (GLUE version)."""
 
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
 
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
 
-	def get_labels(self):
-		"""See base class."""
-		return ["0", "1"]
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["0", "1"]
 
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, line[0])
-			try:
-				text_a = line[3]
-				text_b = line[4]
-				label = line[5]
-			except IndexError:
-				continue
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-		return examples
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			guid = "%s-%s" % (set_type, i)
+# 			text_a = line[3]
+# 			label = line[1]
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+# 		return examples
 
 
-class QnliProcessor(DataProcessor):
-	"""Processor for the STS-B data set (GLUE version)."""
+# class Sst2Processor(DataProcessor):
+# 	"""Processor for the SST-2 data set (GLUE version)."""
 
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
 
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), 
-			"dev_matched")
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
 
-	def get_labels(self):
-		"""See base class."""
-		return ["entailment", "not_entailment"]
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["0", "1"]
 
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, line[0])
-			text_a = line[1]
-			text_b = line[2]
-			label = line[-1]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-		return examples
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, i)
+# 			text_a = line[0]
+# 			label = line[1]
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+# 		return examples
 
 
-class RteProcessor(DataProcessor):
-	"""Processor for the RTE data set (GLUE version)."""
+# class StsbProcessor(DataProcessor):
+# 	"""Processor for the STS-B data set (GLUE version)."""
 
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
 
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
 
-	def get_labels(self):
-		"""See base class."""
-		return ["entailment", "not_entailment"]
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return [None]
 
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, line[0])
-			text_a = line[1]
-			text_b = line[2]
-			label = line[-1]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-		return examples
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, line[0])
+# 			text_a = line[7]
+# 			text_b = line[8]
+# 			label = line[-1]
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+# 		return examples
 
 
-class WnliProcessor(DataProcessor):
-	"""Processor for the WNLI data set (GLUE version)."""
+# class QqpProcessor(DataProcessor):
+# 	"""Processor for the STS-B data set (GLUE version)."""
 
-	def get_train_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
 
-	def get_dev_examples(self, data_dir):
-		"""See base class."""
-		return self._create_examples(
-			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
 
-	def get_labels(self):
-		"""See base class."""
-		return ["0", "1"]
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["0", "1"]
 
-	def _create_examples(self, lines, set_type):
-		"""Creates examples for the training and dev sets."""
-		examples = []
-		for (i, line) in enumerate(lines):
-			if i == 0:
-				continue
-			guid = "%s-%s" % (set_type, line[0])
-			text_a = line[1]
-			text_b = line[2]
-			label = line[-1]
-			examples.append(
-				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-		return examples
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, line[0])
+# 			try:
+# 				text_a = line[3]
+# 				text_b = line[4]
+# 				label = line[5]
+# 			except IndexError:
+# 				continue
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+# 		return examples
+
+
+# class QnliProcessor(DataProcessor):
+# 	"""Processor for the STS-B data set (GLUE version)."""
+
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), 
+# 			"dev_matched")
+
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["entailment", "not_entailment"]
+
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, line[0])
+# 			text_a = line[1]
+# 			text_b = line[2]
+# 			label = line[-1]
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+# 		return examples
+
+
+# class RteProcessor(DataProcessor):
+# 	"""Processor for the RTE data set (GLUE version)."""
+
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["entailment", "not_entailment"]
+
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, line[0])
+# 			text_a = line[1]
+# 			text_b = line[2]
+# 			label = line[-1]
+# 			examples.append(
+# 				InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+# 		return examples
+
+
+# class WnliProcessor(DataProcessor):
+# 	"""Processor for the WNLI data set (GLUE version)."""
+
+# 	def get_train_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+
+# 	def get_dev_examples(self, data_dir):
+# 		"""See base class."""
+# 		return self._create_examples(
+# 			self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+
+# 	def get_labels(self):
+# 		"""See base class."""
+# 		return ["0", "1"]
+
+# 	def _create_examples(self, lines, set_type):
+# 		"""Creates examples for the training and dev sets."""
+# 		examples = []
+# 		for (i, line) in enumerate(lines):
+# 			if i == 0:
+# 				continue
+# 			guid = "%s-%s" % (set_type, line[0])
+# 			text_a = line[1]
+# 			text_b = line[2]
+		# 	label = line[-1]
+		# 	examples.append(
+		# 		InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+		# return examples
 
 class BertEncoder(object):
 	def __init__(self, model, device):
@@ -625,54 +625,54 @@ def _truncate_seq_pair(tokens_a, tokens_b, max_length):
 			tokens_b.pop()
 
 
-def simple_accuracy(preds, labels):
-	return (preds == labels).mean()
+# def simple_accuracy(preds, labels):
+# 	return (preds == labels).mean()
 
 
-def acc_and_f1(preds, labels):
-	acc = simple_accuracy(preds, labels)
-	f1 = f1_score(y_true=labels, y_pred=preds)
-	return {
-		"acc": acc,
-		"f1": f1,
-		"acc_and_f1": (acc + f1) / 2,
-	}
+# def acc_and_f1(preds, labels):
+# 	acc = simple_accuracy(preds, labels)
+# 	f1 = f1_score(y_true=labels, y_pred=preds)
+# 	return {
+# 		"acc": acc,
+# 		"f1": f1,
+# 		"acc_and_f1": (acc + f1) / 2,
+# 	}
 
 
-def pearson_and_spearman(preds, labels):
-	pearson_corr = pearsonr(preds, labels)[0]
-	spearman_corr = spearmanr(preds, labels)[0]
-	return {
-		"pearson": pearson_corr,
-		"spearmanr": spearman_corr,
-		"corr": (pearson_corr + spearman_corr) / 2,
-	}
+# def pearson_and_spearman(preds, labels):
+# 	pearson_corr = pearsonr(preds, labels)[0]
+# 	spearman_corr = spearmanr(preds, labels)[0]
+# 	return {
+# 		"pearson": pearson_corr,
+# 		"spearmanr": spearman_corr,
+# 		"corr": (pearson_corr + spearman_corr) / 2,
+# 	}
 
 
-def compute_metrics(task_name, preds, labels):
-	assert len(preds) == len(labels)
-	if task_name == "cola":
-		return {"mcc": matthews_corrcoef(labels, preds)}
-	elif task_name == "sst-2":
-		return {"acc": simple_accuracy(preds, labels)}
-	elif task_name == "mrpc":
-		return acc_and_f1(preds, labels)
-	elif task_name == "sts-b":
-		return pearson_and_spearman(preds, labels)
-	elif task_name == "qqp":
-		return acc_and_f1(preds, labels)
-	elif task_name == "mnli":
-		return {"acc": simple_accuracy(preds, labels)}
-	elif task_name == "mnli-mm":
-		return {"acc": simple_accuracy(preds, labels)}
-	elif task_name == "qnli":
-		return {"acc": simple_accuracy(preds, labels)}
-	elif task_name == "rte":
-		return {"acc": simple_accuracy(preds, labels)}
-	elif task_name == "wnli":
-		return {"acc": simple_accuracy(preds, labels)}
-	else:
-		raise KeyError(task_name)
+# def compute_metrics(task_name, preds, labels):
+# 	assert len(preds) == len(labels)
+# 	if task_name == "cola":
+# 		return {"mcc": matthews_corrcoef(labels, preds)}
+# 	elif task_name == "sst-2":
+# 		return {"acc": simple_accuracy(preds, labels)}
+# 	elif task_name == "mrpc":
+# 		return acc_and_f1(preds, labels)
+# 	elif task_name == "sts-b":
+# 		return pearson_and_spearman(preds, labels)
+# 	elif task_name == "qqp":
+# 		return acc_and_f1(preds, labels)
+# 	elif task_name == "mnli":
+# 		return {"acc": simple_accuracy(preds, labels)}
+# 	elif task_name == "mnli-mm":
+# 		return {"acc": simple_accuracy(preds, labels)}
+# 	elif task_name == "qnli":
+# 		return {"acc": simple_accuracy(preds, labels)}
+# 	elif task_name == "rte":
+# 		return {"acc": simple_accuracy(preds, labels)}
+# 	elif task_name == "wnli":
+# 		return {"acc": simple_accuracy(preds, labels)}
+# 	else:
+# 		raise KeyError(task_name)
 
 def parse_args():
 	parser = argparse.ArgumentParser()
@@ -893,10 +893,13 @@ def get_encodings(args, encs, tokenizer, bert_encoder, gd, device,
 		enc2 = attr2_encs[guid]
 		logger.info("attr1: {}".format(examples1[i].text_a))
 		logger.info("attr2: {}".format(examples2[i].text_a))
+
+		#what is this?  -Rodrigo
+		#equalize step so i think is only for word embeddings?
 		y = drop((enc1+enc2)/2., gd)
 		z = np.sqrt(1 - np.linalg.norm(y)**2)
 		if (enc1 - enc2).dot(gd) < 0: z = -z
-		enc1 = z * gd + y
+		enc1 = z * gd + y 
 		enc2 = -z * gd + y
 
 		attr1_encs[guid] = enc1 / np.linalg.norm(enc1)
@@ -928,42 +931,42 @@ def prepare_model_and_bias(args, device, num_labels, cache_dir):
 
 	return model, tokenizer, gender_dir
 
-# Prepare model and gender direction (computed by pretrained bert)
-def prepare_model_and_pretrained_bias(args, device, num_labels, cache_dir):
+# # Prepare model and gender direction (computed by pretrained bert)
+# def prepare_model_and_pretrained_bias(args, device, num_labels, cache_dir):
 	
-	tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
-	# a. load pretrained model and compute gender direction
-	model_pretrained = BertForSequenceClassification.from_pretrained(args.bert_model,
-			  cache_dir=cache_dir,
-			  num_labels=num_labels,
-			  normalize=args.normalize,
-			  tune_bert=args.tune_bert).to(device)
-	gender_dir_pretrained = None
-	if (args.debias):
-		bert_encoder_pretrained = BertEncoder(model_pretrained, device)
-		def_pairs = get_def_pairs(args.def_pairs_name)
-		gender_dir_pretrained = compute_gender_dir(device, tokenizer, bert_encoder_pretrained, 
-			def_pairs, args.max_seq_length)
-		gender_dir_pretrained = torch.tensor(gender_dir_pretrained, dtype=torch.float, device=device)
+# 	tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
+# 	# a. load pretrained model and compute gender direction
+# 	model_pretrained = BertForSequenceClassification.from_pretrained(args.bert_model,
+# 			  cache_dir=cache_dir,
+# 			  num_labels=num_labels,
+# 			  normalize=args.normalize,
+# 			  tune_bert=args.tune_bert).to(device)
+# 	gender_dir_pretrained = None
+# 	if (args.debias):
+# 		bert_encoder_pretrained = BertEncoder(model_pretrained, device)
+# 		def_pairs = get_def_pairs(args.def_pairs_name)
+# 		gender_dir_pretrained = compute_gender_dir(device, tokenizer, bert_encoder_pretrained, 
+# 			def_pairs, args.max_seq_length)
+# 		gender_dir_pretrained = torch.tensor(gender_dir_pretrained, dtype=torch.float, device=device)
 
-	if (args.resume_model_path == ""):
-		model_weights_path = args.bert_model
-	else:
-		model_weights_path = args.resume_model_path
-		logger.info("Resume training from {}".format(model_weights_path))
+# 	if (args.resume_model_path == ""):
+# 		model_weights_path = args.bert_model
+# 	else:
+# 		model_weights_path = args.resume_model_path
+# 		logger.info("Resume training from {}".format(model_weights_path))
 	
-	# b. Load model for training
-	if (args.do_train and args.resume_model_path != ""):
-		del model_pretrained
-		model = BertForSequenceClassification.from_pretrained(args.resume_model_path,
-				  cache_dir=cache_dir,
-				  num_labels=num_labels,
-				  normalize=args.normalize,
-				  tune_bert=args.tune_bert).to(device)
-	else:
-		model = model_pretrained
+# 	# b. Load model for training
+# 	if (args.do_train and args.resume_model_path != ""):
+# 		del model_pretrained
+# 		model = BertForSequenceClassification.from_pretrained(args.resume_model_path,
+# 				  cache_dir=cache_dir,
+# 				  num_labels=num_labels,
+# 				  normalize=args.normalize,
+# 				  tune_bert=args.tune_bert).to(device)
+# 	else:
+# 		model = model_pretrained
 
-	return model, tokenizer, gender_dir_pretrained
+# 	return model, tokenizer, gender_dir_pretrained
 
 def prepare_optimizer(args, model, num_train_optimization_steps):
 	# Prepare optimizer

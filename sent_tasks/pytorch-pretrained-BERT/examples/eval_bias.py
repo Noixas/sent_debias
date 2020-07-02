@@ -168,6 +168,17 @@ def evaluate(args, def_pairs, smoothing=False, word_level=False):
 		gd = compute_gender_dir(DEVICE, tokenizer, bert_encoder, def_pairs, 
 			args.max_seq_length, word_level=word_level)
 		logger.info("Computed (gender) bias direction")
+24edscfsgsgsegtset
+24edscfsgsgsegtset
+24edscfsgsgsegtset24edscfsgsgsegtset
+24edscfsgsgsegtset
+24edscfsgsgsegtsetv
+
+24edscfsgsgsegtset
+24edscfsgsgsegtset
+24edscfsgsgsegtsetv
+24edscfsgsgsegtset
+24edscfsgsgsegtset24edscfsgsgsegtset
 
 	with open(args.gendered_words_filename, "r") as f:
 		gender_specific_words = json.load(f)
@@ -229,7 +240,7 @@ def evaluate(args, def_pairs, smoothing=False, word_level=False):
 	else:
 		for filename in all_tests_dict:
 			for metric in ["esize", "pval"]:
-				all_tests_dict[filename][metric] = [all_tests_dict[filename][metric]]
+				all_tes ts_dict[filename][metric] = [all_tests_dict[filename][metric]]
 		save_dict_to_json(all_tests_dict, results_path)
 
 def eval_sent_debias():
@@ -296,175 +307,175 @@ def test_word():
 
 	emb = fasttext_model300.word_vec("hello")
 
-class WordEvaluator(object):
-	"""docstring for Evaluator"""
-	def __init__(self, args):
-		super(WordEvaluator, self).__init__()
-		self.args = args
+# class WordEvaluator(object):
+# 	"""docstring for Evaluator"""
+# 	def __init__(self, args):
+# 		super(WordEvaluator, self).__init__()
+# 		self.args = args
 
-		# define files for evaluation
-		self.filenames = []
-		for i in [6, 7, 8]:
-			self.filenames.append("sent-weat{}.jsonl".format(i))
-			self.filenames.append("sent-weat{}b.jsonl".format(i))
-		self.word_filenames = []
-		for i in [6, 7, 8]:
-			self.word_filenames.append("weat{}.jsonl".format(i))
-			self.word_filenames.append("weat{}b.jsonl".format(i))
+# 		# define files for evaluation
+# 		self.filenames = []
+# 		for i in [6, 7, 8]:
+# 			self.filenames.append("sent-weat{}.jsonl".format(i))
+# 			self.filenames.append("sent-weat{}b.jsonl".format(i))
+# 		self.word_filenames = []
+# 		for i in [6, 7, 8]:
+# 			self.word_filenames.append("weat{}.jsonl".format(i))
+# 			self.word_filenames.append("weat{}b.jsonl".format(i))
 
-		self.vocab = self.init_vocab() # 190 words
-		self.expand_specific_vocab()
+# 		self.vocab = self.init_vocab() # 190 words
+# 		self.expand_specific_vocab()
 		
-		self.E = my_we.WordEmbedding(args.word_model, self.vocab)
-		if (args.debias): self.debias()
+# 		self.E = my_we.WordEmbedding(args.word_model, self.vocab)
+# 		if (args.debias): self.debias()
 
-	# def is_specific(self, word):
-	# 	gender_specific_words = self.gender_specific_words
-	# 	for wi in [word, my_pluralize(word), my_singularize(word)]:
-	# 		if (wi in gender_specific_words): return True
-	# 		if (wi.lower() in gender_specific_words): return True
-	# 	return False
+# 	# def is_specific(self, word):
+# 	# 	gender_specific_words = self.gender_specific_words
+# 	# 	for wi in [word, my_pluralize(word), my_singularize(word)]:
+# 	# 		if (wi in gender_specific_words): return True
+# 	# 		if (wi.lower() in gender_specific_words): return True
+# 	# 	return False
 
-	def init_vocab(self):
-		print("Initializing vocab for evaluation...")
-		vocab = set()
-		for filename in self.filenames:
-			sent_file = os.path.join(DATA_DIR, filename)
-			data = load_json(sent_file)
-			for key in ['targ1', 'targ2', 'attr1', 'attr2']:
-				texts = data[key]['examples']
-				for text in texts:
-					words = set(tokenize(text))
-					vocab = vocab.union(words)
+# 	def init_vocab(self):
+# 		print("Initializing vocab for evaluation...")
+# 		vocab = set()
+# 		for filename in self.filenames:
+# 			sent_file = os.path.join(DATA_DIR, filename)
+# 			data = load_json(sent_file)
+# 			for key in ['targ1', 'targ2', 'attr1', 'attr2']:
+# 				texts = data[key]['examples']
+# 				for text in texts:
+# 					words = set(tokenize(text))
+# 					vocab = vocab.union(words)
 
-		args = self.args
-		with open(args.definitional_filename, "r") as f:
-			definitional = json.load(f)
-		# print("definitional", definitional)
+# 		args = self.args
+# 		with open(args.definitional_filename, "r") as f:
+# 			definitional = json.load(f)
+# 		# print("definitional", definitional)
 
-		with open(args.equalize_filename, "r") as f:
-			equalize = json.load(f)
-		# print("equalize", equalize)
+# 		with open(args.equalize_filename, "r") as f:
+# 			equalize = json.load(f)
+# 		# print("equalize", equalize)
 
-		with open(args.gendered_words_filename, "r") as f:
-			gender_specific_words = json.load(f)
-		print("gender specific", len(gender_specific_words), gender_specific_words[:10])
+# 		with open(args.gendered_words_filename, "r") as f:
+# 			gender_specific_words = json.load(f)
+# 		print("gender specific", len(gender_specific_words), gender_specific_words[:10])
 
-		for pair in definitional:
-			vocab = vocab.union(set(pair))
+# 		for pair in definitional:
+# 			vocab = vocab.union(set(pair))
 
-		for pair in equalize:
-			if (pair[0] in vocab): vocab.add(pair[1])
-			if (pair[1] in vocab): vocab.add(pair[0])
+# 		for pair in equalize:
+# 			if (pair[0] in vocab): vocab.add(pair[1])
+# 			if (pair[1] in vocab): vocab.add(pair[0])
 
-		print("Vocabulary size {}.".format(len(vocab)))
-		assert('gal' in vocab)
+# 		print("Vocabulary size {}.".format(len(vocab)))
+# 		assert('gal' in vocab)
 
-		self.definitional = definitional
-		self.equalize = equalize
-		self.gender_specific_words = gender_specific_words
+# 		self.definitional = definitional
+# 		self.equalize = equalize
+# 		self.gender_specific_words = gender_specific_words
 		
-		return vocab
+# 		return vocab
 
-	# expanding gender_specific_full to gender_specific_complete
-	# with gender specific words from tests.
-	def expand_specific_vocab(self):
-		# expand gender specific words 
-		gender_specific_words = set(self.gender_specific_words)
-		for word_filename in self.word_filenames:
-			word_file = os.path.join(DATA_DIR, word_filename)
-			data = load_json(word_file)
-			for key in ['targ1', 'targ2', "attr1", "attr2"]:
-				category = data[key]["category"]
-				print("category={}".format(category))
-				if (not "male" in category.lower()): continue
-				words = data[key]["examples"]
-				print(words)
-				gender_specific_words = gender_specific_words.union(set(words))
-		self.gender_specific_words = list(gender_specific_words)
+# 	# expanding gender_specific_full to gender_specific_complete
+# 	# with gender specific words from tests.
+# 	def expand_specific_vocab(self):
+# 		# expand gender specific words 
+# 		gender_specific_words = set(self.gender_specific_words)
+# 		for word_filename in self.word_filenames:
+# 			word_file = os.path.join(DATA_DIR, word_filename)
+# 			data = load_json(word_file)
+# 			for key in ['targ1', 'targ2', "attr1", "attr2"]:
+# 				category = data[key]["category"]
+# 				print("category={}".format(category))
+# 				if (not "male" in category.lower()): continue
+# 				words = data[key]["examples"]
+# 				print(words)
+# 				gender_specific_words = gender_specific_words.union(set(words))
+# 		self.gender_specific_words = list(gender_specific_words)
 
-	def debias(self):
-		print("debiasing...")
-		definitional = self.definitional
-		equalize = self.equalize
-		gender_specific_words = self.gender_specific_words
+# 	def debias(self):
+# 		print("debiasing...")
+# 		definitional = self.definitional
+# 		equalize = self.equalize
+# 		gender_specific_words = self.gender_specific_words
 
-		gender_direction = my_we.doPCA(definitional, self.E).components_[0]
-		specific_set = set(gender_specific_words)
-		for i, w in enumerate(self.vocab):
-			if (not isInSet(w, specific_set)):
-				self.E.vecs[i] = my_we.drop(self.E.vecs[i], gender_direction)
-		self.E.normalize()
+# 		gender_direction = my_we.doPCA(definitional, self.E).components_[0]
+# 		specific_set = set(gender_specific_words)
+# 		for i, w in enumerate(self.vocab):
+# 			if (not isInSet(w, specific_set)):
+# 				self.E.vecs[i] = my_we.drop(self.E.vecs[i], gender_direction)
+# 		self.E.normalize()
 
-		# Equalize
-		equalize_subset = []
-		for pair in equalize:
-			if (pair[0] in self.vocab):
-				equalize_subset.append(pair)
-		candidates = {x for e1, e2 in equalize_subset for x in [(e1.lower(), e2.lower()),
-														 (e1.title(), e2.title()),
-														 (e1.upper(), e2.upper())]}
-		# print(candidates)
-		for (a, b) in candidates:
-			if (a in self.E.index and b in self.E.index):
-				y = my_we.drop((self.E.v(a) + self.E.v(b)) / 2, gender_direction)
-				z = np.sqrt(1 - np.linalg.norm(y)**2)
-				if (self.E.v(a) - self.E.v(b)).dot(gender_direction) < 0:
-					z = -z
-				self.E.vecs[self.E.index[a]] = z * gender_direction + y
-				self.E.vecs[self.E.index[b]] = -z * gender_direction + y
-		self.E.normalize()
-		print("finished debiasing")
+# 		# Equalize
+# 		equalize_subset = []
+# 		for pair in equalize:
+# 			if (pair[0] in self.vocab):
+# 				equalize_subset.append(pair)
+# 		candidates = {x for e1, e2 in equalize_subset for x in [(e1.lower(), e2.lower()),
+# 														 (e1.title(), e2.title()),
+# 														 (e1.upper(), e2.upper())]}
+# 		# print(candidates)
+# 		for (a, b) in candidates:
+# 			if (a in self.E.index and b in self.E.index):
+# 				y = my_we.drop((self.E.v(a) + self.E.v(b)) / 2, gender_direction)
+# 				z = np.sqrt(1 - np.linalg.norm(y)**2)
+# 				if (self.E.v(a) - self.E.v(b)).dot(gender_direction) < 0:
+# 					z = -z
+# 				self.E.vecs[self.E.index[a]] = z * gender_direction + y
+# 				self.E.vecs[self.E.index[b]] = -z * gender_direction + y
+# 		self.E.normalize()
+# 		print("finished debiasing")
 
 
-	def get_sent_embedding(self, sent):
-		words = tokenize(sent)
-		# word_embeddings = np.array([self.model.word_vec(w) for w in words]) # T x W(300)
-		word_embeddings = np.array([self.E.v(w) for w in words]) # T x W(300)
-		sent_embeddings = np.mean(word_embeddings, axis=0)
-		return sent_embeddings
+# 	def get_sent_embedding(self, sent):
+# 		words = tokenize(sent)
+# 		# word_embeddings = np.array([self.model.word_vec(w) for w in words]) # T x W(300)
+# 		word_embeddings = np.array([self.E.v(w) for w in words]) # T x W(300)
+# 		sent_embeddings = np.mean(word_embeddings, axis=0)
+# 		return sent_embeddings
 
-	def get_encodings(self, data):
-		results = collections.defaultdict(dict)
-		for key in ['targ1', 'targ2', 'attr1', 'attr2']:
-			texts = data[key]['examples']
-			category = data[key]['category'].lower()
-			logger.info("category={}".format(category))
+# 	def get_encodings(self, data):
+# 		results = collections.defaultdict(dict)
+# 		for key in ['targ1', 'targ2', 'attr1', 'attr2']:
+# 			texts = data[key]['examples']
+# 			category = data[key]['category'].lower()
+# 			logger.info("category={}".format(category))
 
-			results[key]['category'] = category
-			encs = dict()
-			for i, text in enumerate(texts):
-				encs[text] = self.get_sent_embedding(text)
-			results[key]['encs'] = encs
+# 			results[key]['category'] = category
+# 			encs = dict()
+# 			for i, text in enumerate(texts):
+# 				encs[text] = self.get_sent_embedding(text)
+# 			results[key]['encs'] = encs
 
-		return results
+# 		return results
 
-	def evaluate(self):
-		args = self.args
-		if (not os.path.exists(args.results_dir)): os.makedirs(args.results_dir)
-		results_path = os.path.join(args.results_dir, args.output_name)
-		results = []
-		all_tests_dict = dict()
+# 	def evaluate(self):
+# 		args = self.args
+# 		if (not os.path.exists(args.results_dir)): os.makedirs(args.results_dir)
+# 		results_path = os.path.join(args.results_dir, args.output_name)
+# 		results = []
+# 		all_tests_dict = dict()
 
-		for filename in self.filenames:
-			sent_file = os.path.join(DATA_DIR, filename)
-			data = load_json(sent_file)
-			encs = self.get_encodings(data)
-			esize, pval = weat.run_test(encs, n_samples=args.n_samples, parametric=args.parametric)
+# 		for filename in self.filenames:
+# 			sent_file = os.path.join(DATA_DIR, filename)
+# 			data = load_json(sent_file)
+# 			encs = self.get_encodings(data)
+# 			esize, pval = weat.run_test(encs, n_samples=args.n_samples, parametric=args.parametric)
 
-			result = "{}: esize={} pval={}".format(filename, esize, pval)
-			print(filename, result)
-			results.append(result)
-			test_results = {"esize": esize, "pval": pval}
+# 			result = "{}: esize={} pval={}".format(filename, esize, pval)
+# 			print(filename, result)
+# 			results.append(result)
+# 			test_results = {"esize": esize, "pval": pval}
 			
-			all_tests_dict[filename] = test_results
+# 			all_tests_dict[filename] = test_results
 
-		# print and save results
-		for result in results: logger.info(result)
-		results_path = os.path.join(args.results_dir, args.output_name)
+# 		# print and save results
+# 		for result in results: logger.info(result)
+# 		results_path = os.path.join(args.results_dir, args.output_name)
 
-		save_dict_to_json(all_tests_dict, results_path)
-		return
+# 		save_dict_to_json(all_tests_dict, results_path)
+# 		return
 
 def test_fastText():
 	args = parse_args()
